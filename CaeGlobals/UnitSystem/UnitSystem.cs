@@ -43,24 +43,24 @@ namespace CaeGlobals
         // Variables                                                                                                                
         UnitSystemType _unitSystemType;             //ISerializable
         // Base units
-        LengthUnit _lengthUnit;                     //ISerializable
-        AngleUnit _angleUnit;                       //ISerializable
-        MassUnit _massUnit;                         //ISerializable
-        DurationUnit _timeUnit;                     //ISerializable
-        TemperatureUnit _temperatureUnit;           //ISerializable
+        LengthUnit _lengthUnit;
+        AngleUnit _angleUnit;
+        MassUnit _massUnit;
+        DurationUnit _timeUnit;
+        TemperatureUnit _temperatureUnit;
         // Derived units
-        AreaUnit _areaUnit;                         //ISerializable
-        VolumeUnit _volumeUnit;                     //ISerializable
-        SpeedUnit _speedUnit;                       //ISerializable
-        RotationalSpeedUnit _rotationalSpeedUnit;   //ISerializable
-        AccelerationUnit _accelerationUnit;         //ISerializable
-        ForceUnit _forceUnit;                       //ISerializable
-        ForcePerLengthUnit _forcePerLengthUnit;     //ISerializable
-        TorqueUnit _momentUnit;                     //ISerializable
-        PressureUnit _pressureUnit;                 //ISerializable
-        DensityUnit _densityUnit;                   //ISerializable
-        EnergyUnit _energyUnit;                     //ISerializable
-        FrequencyUnit _frequencyUnit;               //ISerializable
+        AreaUnit _areaUnit;
+        VolumeUnit _volumeUnit;
+        SpeedUnit _speedUnit;
+        RotationalSpeedUnit _rotationalSpeedUnit;
+        AccelerationUnit _accelerationUnit;
+        ForceUnit _forceUnit;
+        ForcePerLengthUnit _forcePerLengthUnit;
+        TorqueUnit _momentUnit;
+        PressureUnit _pressureUnit;
+        DensityUnit _densityUnit;
+        EnergyUnit _energyUnit;
+        FrequencyUnit _frequencyUnit;
 
 
         // Properties                                                                                                               
@@ -224,6 +224,33 @@ namespace CaeGlobals
         }
         public UnitSystem(UnitSystemType unitSystemType)
         {
+            SetUnitsFromUnitSystem(unitSystemType);
+        }
+        // ISerialization
+        public UnitSystem(SerializationInfo info, StreamingContext context)
+            : this()
+        {
+            UnitSystemType unitSystemType = UnitSystemType.Undefined;
+            //
+            foreach (SerializationEntry entry in info)
+            {
+                switch (entry.Name)
+                {
+                    case "_unitSystemType":
+                        unitSystemType = (UnitSystemType)entry.Value;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            //
+            SetUnitsFromUnitSystem(unitSystemType);
+        }
+
+
+        // Methods                                                                                                                  
+        private void SetUnitsFromUnitSystem(UnitSystemType unitSystemType)
+        {
             _unitSystemType = unitSystemType;
             //
             switch (_unitSystemType)
@@ -335,70 +362,6 @@ namespace CaeGlobals
             //
             SetConverterUnits();
         }
-        // ISerialization
-        public UnitSystem(SerializationInfo info, StreamingContext context)
-            : this()
-        {
-            foreach (SerializationEntry entry in info)
-            {
-                bool isForcePerLengtUnitDefined = false;     // compatibility for version 0.9.0
-                switch (entry.Name)
-                {
-                    // Base units
-                    case "_unitSystemType":
-                        _unitSystemType = (UnitSystemType)entry.Value; break;
-                    case "_lengthUnit":
-                        _lengthUnit = (LengthUnit)entry.Value; break;
-                    case "_angleUnit":
-                        _angleUnit = (AngleUnit)entry.Value; break;
-                    case "_massUnit":
-                        _massUnit = (MassUnit)entry.Value; break;
-                    case "_timeUnit":
-                        _timeUnit = (DurationUnit)entry.Value; break;
-                    case "_temperatureUnit":
-                        _temperatureUnit = (TemperatureUnit)entry.Value; break;
-                    // Derived units
-                    case "_areaUnit":
-                        _areaUnit = (AreaUnit)entry.Value; break;
-                    case "_volumeUnit":
-                        _volumeUnit = (VolumeUnit)entry.Value; break;
-                    case "_speedUnit":
-                        _speedUnit = (SpeedUnit)entry.Value; break;
-                    case "_rotationalSpeedUnit":
-                        _rotationalSpeedUnit = (RotationalSpeedUnit)entry.Value; break;
-                    case "_accelerationUnit":
-                        _accelerationUnit = (AccelerationUnit)entry.Value; break;
-                    case "_forceUnit":
-                        _forceUnit = (ForceUnit)entry.Value; break;
-                    case "_forcePerLengthUnit":
-                        _forcePerLengthUnit = (ForcePerLengthUnit)entry.Value;
-                        isForcePerLengtUnitDefined = true; break;
-                    case "_momentUnit":
-                        _momentUnit = (TorqueUnit)entry.Value; break;
-                    case "_pressureUnit":
-                        _pressureUnit = (PressureUnit)entry.Value; break;
-                    case "_densityUnit":
-                        _densityUnit = (DensityUnit)entry.Value; break;
-                    case "_energyUnit":
-                        _energyUnit = (EnergyUnit)entry.Value; break;
-                    case "_frequencyUnit":
-                        _frequencyUnit = (FrequencyUnit)entry.Value; break;
-                    default:
-                        throw new NotSupportedException();
-                }
-                // Compatibility
-                if (!isForcePerLengtUnitDefined)
-                {
-                    UnitSystem system = new UnitSystem(_unitSystemType);
-                    _forcePerLengthUnit = system._forcePerLengthUnit;
-                }
-            }
-            //
-            SetConverterUnits();
-        }
-
-
-        // Methods                                                                                                                  
         public void SetConverterUnits()
         {
             // Base units
@@ -445,25 +408,6 @@ namespace CaeGlobals
         {
             // using typeof() works also for null fields
             info.AddValue("_unitSystemType", _unitSystemType, typeof(UnitSystemType));
-            // Base units
-            info.AddValue("_lengthUnit", _lengthUnit, typeof(LengthUnit));
-            info.AddValue("_angleUnit", _angleUnit, typeof(AngleUnit));
-            info.AddValue("_massUnit", _massUnit, typeof(MassUnit));
-            info.AddValue("_timeUnit", _timeUnit, typeof(DurationUnit));
-            info.AddValue("_temperatureUnit", _temperatureUnit, typeof(TemperatureUnit));
-            // Derived units
-            info.AddValue("_areaUnit", _areaUnit, typeof(AreaUnit));
-            info.AddValue("_volumeUnit", _volumeUnit, typeof(VolumeUnit));
-            info.AddValue("_speedUnit", _speedUnit, typeof(SpeedUnit));
-            info.AddValue("_rotationalSpeedUnit", _rotationalSpeedUnit, typeof(RotationalSpeedUnit));
-            info.AddValue("_accelerationUnit", _accelerationUnit, typeof(AccelerationUnit));
-            info.AddValue("_forceUnit", _forceUnit, typeof(ForceUnit));
-            info.AddValue("_forcePerLengthUnit", _forcePerLengthUnit, typeof(ForcePerLengthUnit));
-            info.AddValue("_momentUnit", _momentUnit, typeof(TorqueUnit));
-            info.AddValue("_pressureUnit", _pressureUnit, typeof(PressureUnit));
-            info.AddValue("_densityUnit", _densityUnit, typeof(DensityUnit));
-            info.AddValue("_energyUnit", _energyUnit, typeof(EnergyUnit));
-            info.AddValue("_frequencyUnit", _frequencyUnit, typeof(FrequencyUnit));
         }
     }
 }
