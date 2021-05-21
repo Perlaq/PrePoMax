@@ -388,7 +388,7 @@ namespace PrePoMax
             {
                 tsmiTest.Visible = false;
                 tsmiCropWithCylinder.Visible = false;
-                tsmiCropWithCylinder.Visible = false;
+                tsmiCropWithCube.Visible = false;
             }
         }
         //
@@ -5678,9 +5678,9 @@ namespace PrePoMax
             InvokeIfRequired(_vtk.RemovePreviewedExplodedView, partNames);
         }        
         // Transforms
-        public void AddSymetry(int symetryPlane, double[] symetryPoint)
+        public void AddSymmetry(int symmetryPlane, double[] symmetryPoint)
         {
-            InvokeIfRequired(_vtk.AddSymetry, symetryPlane, symetryPoint);
+            InvokeIfRequired(_vtk.AddSymmetry, symmetryPlane, symmetryPoint);
         }
         public void AddLinearPattern(double[] displacement, int numOfItems)
         {
@@ -5858,9 +5858,9 @@ namespace PrePoMax
             InvokeIfRequired(_vtk.SetSmoothing, pointSmoothing, lineSmoothing, redraw);
         }
         // Highlight
-        public void SetHighlightColor(Color primaryHighlightColor, Color secundaryHighlightColor)
+        public void SetHighlightColor(Color primaryHighlightColor, Color secondaryHighlightColor)
         {
-            InvokeIfRequired(_vtk.SetHighlightColor, primaryHighlightColor, secundaryHighlightColor);
+            InvokeIfRequired(_vtk.SetHighlightColor, primaryHighlightColor, secondaryHighlightColor);
         }
         public void SetMouseHighlightColor(Color mousehighlightColor)
         {

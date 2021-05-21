@@ -5673,7 +5673,7 @@ namespace PrePoMax
             CaeMesh.Globals.ColorTable = _settings.Color.ColorTable;
             // Pre-processing settings
             PreSettings ps = _settings.Pre;
-            _form.SetHighlightColor(ps.PrimaryHighlightColor, ps.SecundaryHighlightColor);
+            _form.SetHighlightColor(ps.PrimaryHighlightColor, ps.SecondaryHighlightColor);
             _form.SetMouseHighlightColor(ps.MouseHighlightColor);
             _form.SetDrawSymbolEdges(ps.DrawSymbolEdges);
             //
@@ -10390,9 +10390,9 @@ namespace PrePoMax
             {
                 foreach (var transformation in _transformations)
                 {
-                    if (transformation is Symetry sym)
+                    if (transformation is Symmetry sym)
                     {
-                        _form.AddSymetry((int)sym.SymetryPlane, sym.PointCoor);
+                        _form.AddSymmetry((int)sym.SymmetryPlane, sym.PointCoor);
                     }
                     else if (transformation is LinearPattern lp)
                     {

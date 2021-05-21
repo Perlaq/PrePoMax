@@ -29,7 +29,7 @@ namespace PrePoMax
         //
         [CategoryAttribute("Pressure magnitude")]
         [OrderedDisplayName(0, 10, "Magnitude")]
-        [DescriptionAttribute("The magnitude of the pressure load.")]
+        [DescriptionAttribute("The magnitude of the shell edge load.")]
         [TypeConverter(typeof(StringForcePerLenghtConverter))]
         [Id(1, 3)]
         public double Magnitude { get { return _shellEdgeLoad.Magnitude; } set { _shellEdgeLoad.Magnitude = value; } }

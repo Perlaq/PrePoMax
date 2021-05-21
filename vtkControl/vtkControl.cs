@@ -59,7 +59,7 @@ namespace vtkControl
         private vtkMaxAnimationFrameData _animationFrameData;
         private bool _animationAcceleration;
         private Color _primaryHighlightColor;
-        private Color _secundaryHighlightColor;
+        private Color _secondaryHighlightColor;
         private double _maxSymbolSize;
         private bool _drawSymbolEdges;
         //
@@ -254,7 +254,7 @@ namespace vtkControl
             _animationActors = new Dictionary<string, vtkMaxActor[]>();
             _animationFrameData = null;
             _primaryHighlightColor = Color.Red;
-            _secundaryHighlightColor = Color.Violet;
+            _secondaryHighlightColor = Color.Violet;
             _drawSymbolEdges = true;
             //
             _animating = false;
@@ -1890,7 +1890,7 @@ namespace vtkControl
             if (actor.GeometryProperty.GetPointSize() <= 1) actor.GeometryProperty.SetPointSize(7);
             //
             Color highlightColor;
-            if (actor.UseSecondaryHighightColor) highlightColor = _secundaryHighlightColor;
+            if (actor.UseSecondaryHighightColor) highlightColor = _secondaryHighlightColor;
             else highlightColor = _primaryHighlightColor;
             //
             actor.GeometryProperty.SetColor(highlightColor.R / 255d * k,
@@ -4124,15 +4124,15 @@ namespace vtkControl
         #endregion  ################################################################################################################
 
         #region Transformations  ###################################################################################################
-        public void AddSymetry(int symetryPlane, double[] symetryPoint)
+        public void AddSymmetry(int symmetryPlane, double[] symmetryPoint)
         {
             vtkTransform transform = vtkTransform.New();
-            transform.Translate(symetryPoint[0], symetryPoint[1], symetryPoint[2]);
-            if (symetryPlane == 0) transform.Scale(-1.0, 1.0, 1.0);
-            else if (symetryPlane == 1) transform.Scale(1.0, -1.0, 1.0);
-            else if (symetryPlane == 2) transform.Scale(1.0, 1.0, -1.0);
+            transform.Translate(symmetryPoint[0], symmetryPoint[1], symmetryPoint[2]);
+            if (symmetryPlane == 0) transform.Scale(-1.0, 1.0, 1.0);
+            else if (symmetryPlane == 1) transform.Scale(1.0, -1.0, 1.0);
+            else if (symmetryPlane == 2) transform.Scale(1.0, 1.0, -1.0);
             else throw new NotSupportedException();
-            transform.Translate(-symetryPoint[0], -symetryPoint[1], -symetryPoint[2]);
+            transform.Translate(-symmetryPoint[0], -symmetryPoint[1], -symmetryPoint[2]);
             //
             _transforms.Add(transform, 2);  // must be 2 for 1 loop
         }
@@ -4468,15 +4468,15 @@ namespace vtkControl
             if (redraw) this.Invalidate();
         }
         // Highlight
-        public void SetHighlightColor(Color primaryHighlightColor, Color secundaryHighlightColor)
+        public void SetHighlightColor(Color primaryHighlightColor, Color secondaryHighlightColor)
         {
             _primaryHighlightColor = primaryHighlightColor;
-            _secundaryHighlightColor = secundaryHighlightColor;
+            _secondaryHighlightColor = secondaryHighlightColor;
             //
             Color highlightColor;
             foreach (var actor in _selectedActors)
             {
-                if (actor.UseSecondaryHighightColor) highlightColor = secundaryHighlightColor;
+                if (actor.UseSecondaryHighightColor) highlightColor = secondaryHighlightColor;
                 else highlightColor = primaryHighlightColor;
                 //
                 actor.GeometryProperty.SetColor(highlightColor.R / 255.0, highlightColor.G / 255.0, highlightColor.B / 255.0);
